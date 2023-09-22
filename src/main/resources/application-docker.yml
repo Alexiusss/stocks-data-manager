@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: stocks-data-manager
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non-contextual-creation: true
+  datasource:
+    url: jdbc:postgresql://postgres/stocks
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+base.url: ${BASE_URL}
+api.token: ${API_TOKEN}
