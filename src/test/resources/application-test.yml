@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:12.10:///test_database
+    username: postgres
+    password: 1234
+  jpa:
+    show-sql: true
+
+base.url: http://localhost:7070/
+api.token: test_api_token
