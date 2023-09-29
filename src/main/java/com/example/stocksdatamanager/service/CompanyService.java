@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.stocksdatamanager.util.JsonUtil.readValues;
 
@@ -29,14 +30,24 @@ public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    @Transactional
-    public void requestCompaniesData() {
-
+    public List<Company> requestCompaniesData() {
         ResponseEntity<String> response = restTemplate.getForEntity(baseURL + "ref-data/symbols?token=" + apiToken, String.class);
 
         if (response.getStatusCode().is2xxSuccessful()) {
-            List<Company> companies = readValues(response.getBody(), Company.class);
-            companyRepository.saveAll(companies.subList(0, 200));
+            return readValues(response.getBody(), Company.class);
         }
+        return List.of();
+    }
+
+    @Transactional
+    public void saveAll(List<Company> companies) {
+        companyRepository.saveAll(companies.subList(0, 200));
+    }
+
+    public List<String> getSymbolsListForActiveCompanies(List<Company> companies) {
+        return companies.stream()
+                .filter(Company::isEnabled)
+                .map(Company::getSymbol)
+                .collect(Collectors.toList());
     }
 }

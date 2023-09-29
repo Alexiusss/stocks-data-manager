@@ -19,8 +19,12 @@ public class CompanyRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void saveAll(List<Company> objects) {
-        String values = objects.stream().map(this::renderSqlForObj).collect(joining(","));
+    public List<Company> findAll() {
+        return crudCompanyRepository.findAll();
+    }
+
+    public void saveAll(List<Company> companies) {
+        String values = companies.stream().map(this::renderSqlForCompany).collect(joining(","));
         String saveSQL = "INSERT INTO companies (symbol, name, is_enabled) VALUES "
                 + values +
                 "ON CONFLICT (symbol) " +
@@ -32,7 +36,7 @@ public class CompanyRepository {
         entityManager.clear();
     }
 
-    private String renderSqlForObj(Company company) {
+    private String renderSqlForCompany(Company company) {
         return "('" + company.getSymbol() + "','" +
                 company.getName() + "'," +
                 company.isEnabled() + ")";
