@@ -76,7 +76,7 @@ public class CompanyTestData {
             "  }\n" +
             "]  ";
 
-    public static void stubExternalAPIResponse() {
+    public static void stubCompanyAPIResponse() {
         stubFor(WireMock.get(urlMatching( "/ref-data/symbols\\?token=test_api_token"))
                 .willReturn(ok(apiResponse)));
     }
