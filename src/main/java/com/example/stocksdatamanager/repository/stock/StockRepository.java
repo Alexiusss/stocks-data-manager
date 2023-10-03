@@ -29,8 +29,8 @@ public class StockRepository {
                 + values +
                 "ON CONFLICT (symbol) " +
                 "DO UPDATE SET " +
-                "name = EXCLUDED.name, " +
                 "latest_price  = EXCLUDED.latest_price, " +
+                "change  = EXCLUDED.change, " +
                 "company_name = EXCLUDED.company_name, " +
                 "previous_volume = EXCLUDED.previous_volume, " +
                 "volume = EXCLUDED.volume;";
@@ -41,9 +41,9 @@ public class StockRepository {
 
     private String renderSqlForStock(Stock stock) {
         return "('" + stock.getSymbol() + "','" +
-                stock.getLatestPrice() + "'," +
-                stock.getChange() + "'," +
-                stock.getCompanyName() + "'," +
+                stock.getLatestPrice() + "','" +
+                stock.getChange() + "','" +
+                stock.getCompanyName() + "','" +
                 stock.getPreviousVolume() + "'," +
                 stock.getVolume() + ")";
     }
