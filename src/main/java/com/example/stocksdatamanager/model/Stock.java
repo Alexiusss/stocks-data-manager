@@ -17,6 +17,12 @@ import javax.persistence.Table;
 public class Stock {
 
     @Id
+    @GeneratedValue(generator = "custom_generator",
+            strategy = GenerationType.SEQUENCE)
+    @GenericGenerator(name = "custom_generator",
+            strategy = "com.example.stocksdatamanager.model.id.generator.BaseIdentifierGenerator")
+    String id;
+
     String symbol;
 
     double latestPrice;
@@ -38,11 +44,11 @@ public class Stock {
             return false;
         }
         Stock that = (Stock) o;
-        return symbol != null && symbol.equals(that.symbol);
+        return id != null && id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        return symbol == null ? 0 : symbol.hashCode();
+        return id == null ? 0 : id.hashCode();
     }
 }

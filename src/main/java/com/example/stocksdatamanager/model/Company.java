@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.data.util.ProxyUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -18,6 +16,12 @@ import javax.persistence.Table;
 public class Company {
 
     @Id
+    @GeneratedValue(generator = "custom_id_generator",
+            strategy = GenerationType.SEQUENCE)
+    @GenericGenerator(name = "custom_id_generator",
+            strategy = "com.example.stocksdatamanager.model.id.generator.BaseIdentifierGenerator")
+    String id;
+
     String symbol;
 
     String name;
@@ -34,11 +38,11 @@ public class Company {
             return false;
         }
         Company that = (Company) o;
-        return symbol != null && symbol.equals(that.symbol);
+        return id != null && id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        return symbol == null ? 0 : symbol.hashCode();
+        return id == null ? 0 : id.hashCode();
     }
 }
