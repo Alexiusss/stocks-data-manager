@@ -11,10 +11,10 @@ spring:
       hibernate:
         generate_statistics: true
         format_sql: true
+        order_inserts: true
+        order_updates: true
         jdbc:
           batch_size: 200
-          order_inserts: true
-          order_updates: true
           lob:
             non-contextual-creation: true
   datasource:

@@ -1,11 +1,12 @@
 package com.example.stocksdatamanager.model;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLInsert;
+import org.hibernate.annotations.SQLUpdate;
 import org.springframework.data.util.ProxyUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -14,6 +15,8 @@ import javax.persistence.Table;
 @Setter
 @ToString
 @Table(name = "stocks")
+@SQLInsert(sql = "SELECT upsert_stock(?,?,?,?,?,?,?)")
+@SQLUpdate(sql = "SELECT upsert_stock(?,?,?,?,?,?,?)")
 public class Stock {
 
     @Id

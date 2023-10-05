@@ -41,7 +41,7 @@ public class CompanyService {
 
     @Transactional
     public void saveAll(List<Company> companies) {
-        companyRepository.saveAll(companies.subList(0, 200));
+        companyRepository.saveAll(companies);
     }
 
     public List<String> getSymbolsListForActiveCompanies(List<Company> companies) {

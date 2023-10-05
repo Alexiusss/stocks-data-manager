@@ -2,6 +2,9 @@ package com.example.stocksdatamanager.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLInsert;
+import org.hibernate.annotations.SQLUpdate;
 import org.springframework.data.util.ProxyUtils;
 
 import javax.persistence.*;
@@ -13,6 +16,8 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Table(name = "companies")
+@SQLInsert(sql = "SELECT upsert_company(?, ?, ?, ?)")
+@SQLUpdate(sql = "SELECT upsert_company(?, ?, ?, ?)")
 public class Company {
 
     @Id
