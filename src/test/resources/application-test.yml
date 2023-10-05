@@ -4,7 +4,18 @@ spring:
     username: postgres
     password: 1234
   jpa:
+    generate-ddl: false
     show-sql: true
+    properties:
+      hibernate:
+        generate_statistics: true
+        format_sql: true
+        order_inserts: true
+        order_updates: true
+        jdbc:
+          batch_size: 200
+          lob:
+            non-contextual-creation: true
 
 base.url: http://localhost:7070/
 api.token: test_api_token

@@ -12,9 +12,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 public class CompanyTestData {
 
     public static final List<Company> COMPANIES_LIST = List.of(
-            new Company("A","Agilent Technologies Inc.", true),
-            new Company("AA","Alcoa Corp", true),
-            new Company("AAA","Investment Managers Series Trust II - AXS First Priority CLO Bond ETF", true)
+            new Company(null,"A","Agilent Technologies Inc.", true),
+            new Company(null,"AA","Alcoa Corp", true),
+            new Company(null,"AAA","Investment Managers Series Trust II - AXS First Priority CLO Bond ETF", true)
     );
 
     public static final List<String> SYMBOLS_LIST = List.of("A", "AA", "AAA");
