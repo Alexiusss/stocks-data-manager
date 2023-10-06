@@ -1,25 +1,25 @@
-CREATE TABLE companies
+CREATE TABLE IF NOT EXISTS companies
 (
-    id         varchar(255) not null,
-    symbol     varchar(255) not null,
-    name       varchar(255) not null,
-    is_enabled boolean default false,
-    primary key (id)
+    id         VARCHAR(255) PRIMARY KEY NOT NULL,
+    symbol     VARCHAR(255) NOT NULL,
+    name       VARCHAR(255) NOT NULL,
+    is_enabled BOOLEAN DEFAULT FALSE
 );
 
 CREATE UNIQUE INDEX companies_symbol_index ON companies (symbol);
 
 
-CREATE TABLE stocks
+CREATE TABLE IF NOT EXISTS stocks
 (
-    id              varchar(255) not null,
-    symbol          varchar(255) not null,
-    latest_price    decimal,
-    change          decimal,
-    company_name    varchar(255) not null,
-    previous_volume int,
-    volume          int,
-    primary key (symbol)
+    id              varchar(255) PRIMARY KEY not null,
+    symbol          VARCHAR(255) NOT NULL,
+    latest_price    DECIMAL,
+    change          DECIMAL,
+    company_name    VARCHAR(255) NOT NULL,
+    previous_volume INT,
+    volume          INT,
+    company_id      VARCHAR(255) NOT NULL,
+    FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE
 );
 
 CREATE UNIQUE INDEX stocks_symbol_index ON stocks (symbol);
