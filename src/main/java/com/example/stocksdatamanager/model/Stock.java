@@ -15,8 +15,8 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Table(name = "stocks")
-@SQLInsert(sql = "SELECT upsert_stock(?,?,?,?,?,?,?)")
-@SQLUpdate(sql = "SELECT upsert_stock(?,?,?,?,?,?,?)")
+@SQLInsert(sql = "SELECT upsert_stock(?,?,?,?,?,?,?,?)")
+@SQLUpdate(sql = "SELECT upsert_stock(?,?,?,?,?,?,?,?)")
 public class Stock {
 
     @Id
@@ -37,6 +37,8 @@ public class Stock {
     Integer previousVolume;
 
     Integer volume;
+
+    String companyId;
 
     @Override
     public boolean equals(Object o) {

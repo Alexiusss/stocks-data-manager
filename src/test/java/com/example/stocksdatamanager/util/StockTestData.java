@@ -11,13 +11,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 @UtilityClass
 public class StockTestData {
 
-    public static final Stock STOCK = new Stock(null, "MSFT", 77.55, 2.33, "Microsoft Corporation", 12345678, null);
+    public static final Stock STOCK = new Stock(null, "MSFT", 322.62, 1.85, "Microsoft Corporation", 21436525, null, "company_1_id");
 
     public static final List<Stock> STOCK_LIST = List.of(
             STOCK,
-            new Stock(null, "A", 111.05, 0.77, "Agilent Technologies Inc.", 21436525, null),
-            new Stock(null, "AA", 77.12, 0.55, "Alcoa Corp", 65456411, null),
-            new Stock(null, "AAA", 89.37, 1.27, "Investment Managers Series Trust II - AXS First Priority CLO Bond ETF", 23654564, null)
+            new Stock(null, "A", 111.05, 0.77, "Agilent Technologies Inc.", 21436525, null, "company_2_id"),
+            new Stock(null, "AA", 77.12, 0.55, "Alcoa Corp", 65456411, null, "company_3_id"),
+            new Stock(null, "AAA", 89.37, 1.27, "Investment Managers Series Trust II - AXS First Priority CLO Bond ETF", 23654564, null, "company_4_id")
     );
 
     private final String apiResponse = "{\n" +

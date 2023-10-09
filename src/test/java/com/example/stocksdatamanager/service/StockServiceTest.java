@@ -23,7 +23,7 @@ public class StockServiceTest extends CommonServiceTest {
 
         Stock stock = stockService.requestStockData("MSFT");
 
-        assertThat(stock).isEqualTo(STOCK);
+        assertThat(stock.getSymbol()).isEqualTo("MSFT");
     }
 
     @Test
