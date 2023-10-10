@@ -18,6 +18,14 @@ public class StockRepository {
         return crudStockRepository.findAll();
     }
 
+    public List<Stock> findMostExpensiveStocks() {
+        return crudStockRepository.findMostExpensiveStocks();
+    }
+
+    public List<Stock> findMostVolatileStocks(){
+        return crudStockRepository.findMostVolatileStocks();
+    }
+
     public void saveAll(List<Stock> stocks) {
         crudStockRepository.saveAll(stocks);
     }

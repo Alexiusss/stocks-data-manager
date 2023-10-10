@@ -14,6 +14,7 @@ import java.util.List;
 import static com.example.stocksdatamanager.util.JsonUtil.readValue;
 
 @Service
+@Transactional(readOnly = true)
 public class StockService {
     @Value("${base.url}")
     String baseURL;
@@ -39,5 +40,13 @@ public class StockService {
     @Transactional
     public void saveAll(List<Stock> stocks) {
         stockRepository.saveAll(stocks);
+    }
+
+    public List<Stock> getMostExpensiveStocks(){
+        return stockRepository.findMostExpensiveStocks();
+    }
+
+    public List<Stock> getMostVolatileStocks(){
+        return stockRepository.findMostVolatileStocks();
     }
 }
