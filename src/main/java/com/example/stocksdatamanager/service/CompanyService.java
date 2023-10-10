@@ -39,6 +39,10 @@ public class CompanyService {
         return List.of();
     }
 
+    public List<Company> getAllActive() {
+        return companyRepository.findAllActive();
+    }
+
     @Transactional
     public void saveAll(List<Company> companies) {
         companyRepository.saveAll(companies);

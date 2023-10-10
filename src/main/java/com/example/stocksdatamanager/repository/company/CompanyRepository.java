@@ -18,6 +18,10 @@ public class CompanyRepository {
         return crudCompanyRepository.findAll();
     }
 
+    public List<Company> findAllActive() {
+        return crudCompanyRepository.findAllActive();
+    }
+
     public void saveAll(List<Company> companies) {
         crudCompanyRepository.saveAll(companies);
     }
