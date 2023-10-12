@@ -1,5 +1,6 @@
 package com.example.stocksdatamanager.service;
 
+import com.example.stocksdatamanager.model.Company;
 import com.example.stocksdatamanager.model.Stock;
 import com.example.stocksdatamanager.repository.stock.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import static com.example.stocksdatamanager.util.JsonUtil.readValue;
@@ -16,6 +18,7 @@ import static com.example.stocksdatamanager.util.JsonUtil.readValue;
 @Service
 @Transactional(readOnly = true)
 public class StockService {
+
     @Value("${base.url}")
     String baseURL;
 
@@ -42,11 +45,19 @@ public class StockService {
         stockRepository.saveAll(stocks);
     }
 
-    public List<Stock> getMostExpensiveStocks(){
+    public List<Stock> getMostExpensiveStocks() {
         return stockRepository.findMostExpensiveStocks();
     }
 
-    public List<Stock> getMostVolatileStocks(){
+    public List<Stock> getMostVolatileStocks() {
         return stockRepository.findMostVolatileStocks();
+    }
+
+    public static String calculateValue(Stock stock) {
+        int volume = stock.getVolume() != null ? stock.getVolume() : stock.getPreviousVolume();
+
+        double value = stock.getLatestPrice() * volume;
+
+        return new DecimalFormat("#,###.00").format(value);
     }
 }
