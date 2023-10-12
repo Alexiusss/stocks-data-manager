@@ -8,7 +8,10 @@ import java.util.List;
 
 public interface CrudStockRepository extends JpaRepository<Stock, String> {
     @Query(value = "SELECT * FROM stocks " +
-            "ORDER BY latest_price DESC " +
+            "ORDER BY CASE " +
+            "WHEN volume IS NOT NULL THEN (volume * latest_price) " +
+            "ELSE (previous_volume * latest_price) " +
+            "END DESC " +
             "LIMIT 5",
             nativeQuery = true)
     List<Stock> findMostExpensiveStocks();
