@@ -4,14 +4,16 @@ import com.example.stocksdatamanager.model.Company;
 import com.example.stocksdatamanager.model.Stock;
 import com.example.stocksdatamanager.repository.stock.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 import static com.example.stocksdatamanager.util.JsonUtil.readValue;
 
@@ -22,15 +24,34 @@ public class StockService extends BaseService{
     private StockRepository stockRepository;
 
     @Autowired
-    private StockRepository stockRepository;
+    CompanyService companyService;
 
-    public Stock requestStockData(String symbol) {
-        ResponseEntity<String> response = restTemplate.getForEntity(baseURL + "stock/" + symbol + "/quote?token=" + apiToken, String.class);
+    // https://sysout.ru/completablefuture/
+    public List<Stock> requestStocksData() throws ExecutionException, InterruptedException {
+        List<Company> activeCompanies = Collections.synchronizedList(companyService.getAllActive());
 
-        if (response.getStatusCode().is2xxSuccessful()) {
-            return readValue(response.getBody(), Stock.class);
-        }
-        return new Stock();
+        List<CompletableFuture<Stock>> pageStockFutures = activeCompanies.stream()
+                .map(this::requestStockData)
+                .collect(Collectors.toList());
+
+        return CompletableFuture.allOf(pageStockFutures.toArray(new CompletableFuture[0]))
+                .thenApply(v -> pageStockFutures.stream()
+                        .map(CompletableFuture::join)
+                        .collect(Collectors.toList()))
+                .get();
+    }
+
+    public CompletableFuture<Stock> requestStockData(Company company) {
+        return CompletableFuture.supplyAsync(() -> {
+                    ResponseEntity<String> response = restTemplate.getForEntity(baseURL + "stock/" + company.getSymbol() + "/quote?token=" + apiToken, String.class);
+                    if (response.getStatusCode().is2xxSuccessful()) {
+                        Stock stock = readValue(response.getBody(), Stock.class);
+                        stock.setCompanyId(company.getId());
+                        return stock;
+                    }
+                    return new Stock();
+                }
+        );
     }
 
     @Transactional
