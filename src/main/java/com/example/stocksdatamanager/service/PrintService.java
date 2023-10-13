@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Locale;
 
-import static com.example.stocksdatamanager.service.StockService.calculateValue;
+import static com.example.stocksdatamanager.service.StockService.calculateStockValue;
 
 @Service
 public class PrintService {
@@ -15,7 +15,7 @@ public class PrintService {
 
         stocks.forEach(stock -> {
             printTableRow(stock.getCompanyName(),
-                    calculateValue(stock));
+                    calculateStockValue(stock));
         });
         printSeparateLine();
     }

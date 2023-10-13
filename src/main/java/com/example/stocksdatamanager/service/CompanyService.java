@@ -3,11 +3,9 @@ package com.example.stocksdatamanager.service;
 import com.example.stocksdatamanager.model.Company;
 import com.example.stocksdatamanager.repository.company.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,17 +13,7 @@ import java.util.stream.Collectors;
 import static com.example.stocksdatamanager.util.JsonUtil.readValues;
 
 @Service
-@Transactional(readOnly = true)
-public class CompanyService {
-
-    @Value("${base.url}")
-    String baseURL;
-
-    @Value("${api.token}")
-    String apiToken;
-
-    @Autowired
-    private RestTemplate restTemplate;
+public class CompanyService extends BaseService{
 
     @Autowired
     private CompanyRepository companyRepository;
@@ -50,6 +38,7 @@ public class CompanyService {
 
     public List<String> getSymbolsListForActiveCompanies(List<Company> companies) {
         return companies.stream()
+                .parallel()
                 .filter(Company::isEnabled)
                 .map(Company::getSymbol)
                 .collect(Collectors.toList());

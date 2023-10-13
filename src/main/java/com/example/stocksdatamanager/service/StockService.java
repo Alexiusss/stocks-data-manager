@@ -16,17 +16,10 @@ import java.util.List;
 import static com.example.stocksdatamanager.util.JsonUtil.readValue;
 
 @Service
-@Transactional(readOnly = true)
-public class StockService {
-
-    @Value("${base.url}")
-    String baseURL;
-
-    @Value("${api.token}")
-    String apiToken;
+public class StockService extends BaseService{
 
     @Autowired
-    private RestTemplate restTemplate;
+    private StockRepository stockRepository;
 
     @Autowired
     private StockRepository stockRepository;
@@ -53,7 +46,7 @@ public class StockService {
         return stockRepository.findMostVolatileStocks();
     }
 
-    public static String calculateValue(Stock stock) {
+    public static String calculateStockValue(Stock stock) {
         int volume = stock.getVolume() != null ? stock.getVolume() : stock.getPreviousVolume();
 
         double value = stock.getLatestPrice() * volume;
