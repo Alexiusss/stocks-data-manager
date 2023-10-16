@@ -3,6 +3,7 @@ package com.example.stocksdatamanager.service;
 import com.example.stocksdatamanager.model.Company;
 import com.example.stocksdatamanager.model.Stock;
 import com.example.stocksdatamanager.repository.stock.StockRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 import static com.example.stocksdatamanager.util.JsonUtil.readValue;
 
+@Slf4j
 @Service
 public class StockService extends BaseService{
 
@@ -29,7 +31,7 @@ public class StockService extends BaseService{
     // https://sysout.ru/completablefuture/
     public List<Stock> requestStocksData() throws ExecutionException, InterruptedException {
         List<Company> activeCompanies = Collections.synchronizedList(companyService.getAllActive());
-
+        log.info("Request stock data for " + activeCompanies.size() + " companies");
         List<CompletableFuture<Stock>> pageStockFutures = activeCompanies.stream()
                 .map(this::requestStockData)
                 .collect(Collectors.toList());
@@ -48,8 +50,11 @@ public class StockService extends BaseService{
                         Stock stock = readValue(response.getBody(), Stock.class);
                         stock.setCompanyId(company.getId());
                         return stock;
+                    } else {
+                        log.error("Status code: " + response.getStatusCode() + ", Error: " + response.getBody());
+                        return new Stock();
                     }
-                    return new Stock();
+
                 }
         );
     }
@@ -57,13 +62,17 @@ public class StockService extends BaseService{
     @Transactional
     public void saveAll(List<Stock> stocks) {
         stockRepository.saveAll(stocks);
+        log.info("Saved " + stocks.size() + " stocks");
+
     }
 
     public List<Stock> getMostExpensiveStocks() {
+        log.info("Get info about the most expensive stocks");
         return stockRepository.findMostExpensiveStocks();
     }
 
     public List<Stock> getMostVolatileStocks() {
+        log.info("Get info about the most volatile stocks");
         return stockRepository.findMostVolatileStocks();
     }
 
