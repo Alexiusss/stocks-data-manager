@@ -10,7 +10,7 @@ import java.util.List;
 import static com.example.stocksdatamanager.util.CompanyTestData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CompanyServiceTest extends CommonServiceTest{
+class CompanyServiceTest extends AbstractServiceTest {
 
     @Autowired
     private CompanyService companyService;
@@ -24,7 +24,9 @@ class CompanyServiceTest extends CommonServiceTest{
 
         List<Company> companies = companyService.requestCompaniesData();
 
-        assertThat(companies).containsExactlyInAnyOrderElementsOf(COMPANIES_LIST);
+        assertThat(companies)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+                .containsExactlyInAnyOrderElementsOf(COMPANIES_LIST);
     }
 
     @Test
