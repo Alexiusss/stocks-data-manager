@@ -22,5 +22,7 @@ spring:
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
 
+aspect.enabled: true
+
 base.url: ${BASE_URL}
 api.token: ${API_TOKEN}
